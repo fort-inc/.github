@@ -1,0 +1,69 @@
+# 文書リポ・実験リポ用の CI 雛形(株式会社Fort 標準)。
+#
+# 開発ハンドブック 6節「CI標準」の「文書リポ / 実験リポ」列をそのまま実装したもの。
+#   gitleaks = 必須。それ以外の検査は任意。
+#
+# 写し方: このファイルを対象リポの .github/workflows/ci.yml として置く。
+# 検査を足すのは自由。gitleaks を消すのは不可。
+# なぜ: 一度 push された鍵は、後のコミットで消しても漏れたまま。
+#       文書リポか実験リポかと無関係に取り返しがつかない。
+#
+# このリポが公開・本番へ昇格したら fort-ci-production.yml へ差し替える。
+
+name: CI
+
+# push と PR の両方で回す。PR だけだと main へ入った後の混入を拾えないため。
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+# 同じブランチで新しい push があれば、走っている古い実行を止める。
+# 待ち時間と Actions の消費を無駄にしないため。
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# 最小権限。この workflow はコードを読むだけで、書き込みも PR へのコメントもしない。
+permissions:
+  contents: read
+
+jobs:
+  gitleaks:
+    name: gitleaks (秘密情報の混入検査)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # 履歴を全部取る。過去のコミットに埋まった秘密情報も検出対象にするため
+          # (一度 push された鍵は、後のコミットで消しても漏れたままなので)。
+          fetch-depth: 0
+
+      # 公式の gitleaks/gitleaks-action は organization 所有リポで GITLEAKS_LICENSE を要求し、
+      # かつライセンス検証のため外部サービス(keygen)へリポ名を送る。
+      # organization 配下では action は使わず、
+      # 公式リリースのバイナリをバージョン固定 + SHA256 検証して直接走らせる。
+      # → ライセンス不要・外部送信なし・供給元の差し替えも検知できる。
+      - name: Install gitleaks
+        env:
+          GITLEAKS_VERSION: 8.30.1
+          # gitleaks_8.30.1_linux_x64.tar.gz の公式チェックサム。
+          # バージョンを上げる時はこの値も必ず同時に更新する(片方だけ変えると検証が落ちる)。
+          GITLEAKS_SHA256: 551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb
+        run: |
+          set -euo pipefail
+          curl -sSfL -o gitleaks.tar.gz \
+            "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_x64.tar.gz"
+          echo "${GITLEAKS_SHA256}  gitleaks.tar.gz" | sha256sum -c -
+          tar -xzf gitleaks.tar.gz gitleaks
+          sudo install -m 0755 gitleaks /usr/local/bin/gitleaks
+          rm -f gitleaks.tar.gz gitleaks
+          gitleaks version
+
+      - name: Scan git history for secrets
+        # --redact: 検出した値そのものをログに出さない。
+        #   Actions のログは組織のメンバーが読めるので、漏れた鍵をログで二次拡散させないため。
+        # 検出があれば gitleaks は exit code 2 を返し、この job が落ちて merge できなくなる(blocking)。
+        run: gitleaks git --redact --verbose .

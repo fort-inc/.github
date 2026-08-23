@@ -1,0 +1,7 @@
+# 空の issue を許可しない。6項目を欠いた起票は受け手が着手できないため。
+blank_issues_enabled: false
+
+contact_links:
+  - name: 開発ハンドブック
+    url: https://github.com/fort-inc/.github/blob/main/CONTRIBUTING.md
+    about: issue を立てるか PR 本文だけで済ませるかの判定基準はここ。

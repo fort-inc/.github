@@ -30,10 +30,10 @@
 | 何を知りたいか | どこを読むか |
 |---|---|
 | 工程・器の切替・マージ条件・ブランチ・障害時 | fort-inc/.github の `CONTRIBUTING.md` |
-| 推奨の技術構成とデプロイ先 | fort-inc/.github の `TECH_STACK.md` |
+| 新しいリポの形と CI の書き方 | fort-inc/.github の `CONTRIBUTING.md` 6節と9節 |
 | issue / PR の様式 | fort-inc/.github の各テンプレ |
-| 名義・鍵の実務・顧客データの扱い | fort-inc/rules(private) |
-| リポ地図(どのリポに何があるか・保護レベル) | fort-inc/rules の `README.md` |
+| 役と権限・名義・鍵の実務・顧客データ・人の出入り・監査 | fort-inc/rules(private)の `internal-rules.md` |
+| リポ地図(どのリポに何があるか・main の保護) | fort-inc/rules の `README.md` |
 
 ここに書いていない規律を、その場の推論で作らない。
 

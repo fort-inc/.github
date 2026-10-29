@@ -8,8 +8,8 @@
 
 | 文書 | 中身 |
 |---|---|
-| [開発ハンドブック](https://github.com/fort-inc/.github/blob/main/CONTRIBUTING.md) | 5工程・器の切替・マージ条件・ブランチとリリース・障害時・AI 開発の作法 |
-| [技術スタック](https://github.com/fort-inc/.github/blob/main/TECH_STACK.md) | 推奨構成とデプロイ先の既定 |
+| [開発ハンドブック](https://github.com/fort-inc/.github/blob/main/CONTRIBUTING.md) | 5工程・器の切替・マージ条件・main の守り・CI・ブランチとリリース・リポの形・障害時・AI 開発の作法 |
 | [CLAUDE.md 雛形](https://github.com/fort-inc/.github/blob/main/CLAUDE.md.example) | 各リポへ配る AI 向けの規律 |
+| [脆弱性の報告](https://github.com/fort-inc/.github/blob/main/SECURITY.md) | 脆弱性を見つけた時の報告先 |
 
 型は固定ではない。前提が変わったら変える。だから各ルールには理由が1行添えてある。

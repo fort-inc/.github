@@ -1,5 +1,0 @@
-{
-  "name": "Fort CI — 公開・本番リポ",
-  "description": "開発ハンドブック 6節の「公開・本番リポ」列。gitleaks / Lint / 型チェック / テスト / ビルド / AI レビュー。検査を消して使わない。",
-  "categories": ["Continuous integration", "JavaScript", "TypeScript", "Node"]
-}

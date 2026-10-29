@@ -1,5 +1,0 @@
-{
-  "name": "Fort CI — 文書リポ・実験リポ",
-  "description": "開発ハンドブック 6節の「文書リポ / 実験リポ」列。gitleaks のみ必須。検査を足すのは自由、gitleaks を消すのは不可。",
-  "categories": ["Continuous integration"]
-}

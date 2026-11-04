@@ -1,0 +1,11 @@
+# Dependabot の設定。文書リポと実験リポ用。正本は fort-inc/.github の CONTRIBUTING.md 6 節。
+# 版上げの PR は出さない。open-pull-requests-limit: 0 は版上げだけを止める。
+# 脆弱性の修正の PR は、リポの設定の Dependabot security updates が出す。
+# このリポには package.json が無いので、npm の項目を削り、GitHub Actions の項目だけを置く。
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    open-pull-requests-limit: 0
